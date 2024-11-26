@@ -9,7 +9,7 @@ import Raw.RawAccount;
 import Utils.JSONBuilder;
 import Utils.jwtHandler;
 
-@Path("/account")
+@Path("/accounts")
 public class accountAPI {
     @EJB
     private AccountTableRemote accountTableRemote;
@@ -21,9 +21,14 @@ public class accountAPI {
     @Path("/login")
     public Response auth(String UserJson) {
         RawAccount rawAccount = JSONBuilder.accountParser(UserJson);
-        Long id = accountTableRemote.checkAccount(rawAccount.getUsername(), rawAccount.getPassword());
+        
+        Long id = accountTableRemote.checkAccount(
+                                                rawAccount.getUsername(), 
+                                                rawAccount.getPassword());
+        
         if(id != null) {
             String jwt = jwtHandler.createJWT(rawAccount, id);
+            
             return Response.status(200).entity(jwt).build();
         }
 
@@ -32,16 +37,24 @@ public class accountAPI {
 
     @POST
     @Consumes("text/plain")
-    @Path("/checkToken")
+    @Path("/check-token")
     public Response verify(String jwtString) {
+        
         RawAccount ret = jwtHandler.verify(jwtString);
+        
         if(ret == null)
             return Response.status(400).entity("Session timeout!").build();
-        Long id = accountTableRemote.checkAccount(ret.getUsername(), ret.getPassword());
+        
+        Long id = accountTableRemote.checkAccount(
+                                                    ret.getUsername(), 
+                                                    ret.getPassword());
+        
         if(id != null) {
             String jwt = jwtHandler.createJWT(ret, id);
+            
             return Response.status(200).entity(jwt).build();
         }
+        
         return Response.status(403).build();
     }
 
@@ -58,8 +71,10 @@ public class accountAPI {
         }
 
         Long id = accountTableRemote.addAccount(rawAccount);
+        
         if(id != null) {
             String jwt = jwtHandler.createJWT(rawAccount, id);
+            
             return Response.status(200).entity(jwt).build();
         }
 

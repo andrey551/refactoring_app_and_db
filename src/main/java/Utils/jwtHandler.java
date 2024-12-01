@@ -7,11 +7,13 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import Raw.RawAccount;
+import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Date;
 import java.sql.Time;
 import java.util.UUID;
 
+@Slf4j
 public class jwtHandler {
     private static final String key = "TuanAnhdeptraiprovipno1";
     private static final Algorithm algorithm = Algorithm.HMAC256(key);
@@ -41,14 +43,19 @@ public class jwtHandler {
                 String username = decodedJWT.getClaim("username").toString();
                 String password = decodedJWT.getClaim("password").toString();
                 String  id = decodedJWT.getClaim("id").toString();
+
                 System.out.println(username + " " + password + " " + id);
+                log.info("Username: {}, Password: {}, ID: {}", username, password, id);
+
+
                 return new RawAccount(username.substring(1, username.length() - 1),
                         password.substring(1, password.length() - 1),
                         Long.valueOf(id)
                         );
             }
         } catch (JWTVerificationException e) {
-            System.out.println(e.getMessage());
+            // System.out.println(e.getMessage());
+            log.error("JWT Verification failed: {}", e.getMessage(), e);
         }
 
         return null;

@@ -8,11 +8,13 @@ import jakarta.json.JsonArrayBuilder;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonReader;
 import jakarta.json.stream.JsonParsingException;
+import lombok.extern.slf4j.Slf4j;
 
 
 import java.io.StringReader;
 import java.util.List;
 
+@Slf4j
 public class JSONBuilder {
     public static String tokenParser(String payload) {
         JsonObject object ;
@@ -120,7 +122,9 @@ public class JSONBuilder {
                 .add("passengers", raw.getPassengers())
                 .add("type", raw.getType())
                 .build();
-        System.out.println(ret.toString());
+        // System.out.println(ret.toString());
+        log.info("JSON Output: {}", ret.toString());
+
         return ret;
     }
 

@@ -7,9 +7,11 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 import Model.Comment;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 
+@Slf4j
 @Singleton
 public class CommentTable implements CommentTableRemote{
     EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("tad");
@@ -27,8 +29,12 @@ public class CommentTable implements CommentTableRemote{
 
     @Override
     public boolean addComment(Comment comment) {
+
         begin();
-        System.out.println(comment.toString());
+
+        // System.out.println(comment.toString());
+        log.info("Comment received: " + comment.toString());
+
         long ret = entityManager
                 .createNativeQuery("INSERT INTO Comment(location_id, user_id, content, rating) values (?, ?, ?, ?)")
                 .setParameter(1, comment.getLocation_id())

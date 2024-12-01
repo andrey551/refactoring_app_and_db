@@ -10,14 +10,17 @@ import jakarta.ejb.EJB;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.Response;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 
 import static Utils.JSONBuilder.SpecsJson;
 import static Utils.JSONBuilder.locationsJson;
 
+@Slf4j
 @Path("/locations")
 public class locationAPI {
+
     @EJB
     LocationTableRemote locationTableRemote ;
 
@@ -52,7 +55,8 @@ public class locationAPI {
         if(user != null) {
             List<Location> list = locationTableRemote.getLocs(req.getType());
             
-            System.out.println(list.toString());
+            // System.out.println(list.toString());
+            log.info("Location received: " + list.toString());
             
             return Response.status(200).entity(locationsJson(list)).build();
         }

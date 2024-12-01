@@ -17,12 +17,15 @@ import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Timestamp;
 import java.util.List;
 
+@Slf4j
 @Path("/homes")
 public class homeAPI {
+
     @EJB
     private AccountTableRemote accountTableRemote;
     @EJB
@@ -48,7 +51,11 @@ public class homeAPI {
             return Response.status(400).entity("Session timeout!").build();
 
         User user = userTableRemote.getUserByAccountId(ret.getId());
-        System.out.println(user);
+
+        // System.out.println(user);
+        log.info("User: {}", user);
+
+
         if(user != null) {
             return Response
                     .status(200)

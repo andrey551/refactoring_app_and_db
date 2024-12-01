@@ -20,12 +20,15 @@ import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.List;
 
 /**
  *
  * @author Dau Cong Tuan Anh
  */
+@Slf4j
 @Path("/comments")
 public class commentAPI {
     
@@ -81,9 +84,12 @@ public class commentAPI {
         
         Comment comment = wrap.getComment();
         
-        System.out.println(coor.toString());
-        System.out.println(comment.toString());
-        
+        // System.out.println(coor.toString());
+        // System.out.println(comment.toString());
+        log.info("Coordinate received: " + coor.toString());
+        log.info("Comment received: " + comment.toString());
+
+
         List<String> headerList = httpHeaders.getRequestHeader("Authorization");
         
         if(headerList.isEmpty()) {

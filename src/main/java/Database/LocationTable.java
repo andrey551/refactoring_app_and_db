@@ -14,10 +14,10 @@ import jakarta.persistence.PersistenceContext;
 import java.util.List;
 
 
-@Singleton
+@Stateless
 public class LocationTable implements LocationTableRemote{
-    EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("tad");
-    EntityManager entityManager = entityManagerFactory.createEntityManager();
+    @PersistenceContext
+    private EntityManager entityManager;
     @Override
     public Location getLocationById(Long id) {
         begin();

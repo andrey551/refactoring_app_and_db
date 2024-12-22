@@ -8,10 +8,10 @@ import jakarta.persistence.Persistence;
 import Model.Doctor;
 import jakarta.persistence.PersistenceContext;
 
-@Singleton
+@Stateless
 public class DoctorTable implements DoctorTableRemote{
-    EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("tad");
-    EntityManager entityManager = entityManagerFactory.createEntityManager();
+    @PersistenceContext
+    private EntityManager entityManager;
     @Override
     public Doctor getDoctorByNameAndAge(String name, Long age) {
         begin();

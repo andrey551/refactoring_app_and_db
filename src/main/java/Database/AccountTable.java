@@ -12,10 +12,10 @@ import jakarta.persistence.PersistenceContext;
 
 import java.util.List;
 
-@Singleton
+@Stateless
 public class AccountTable implements AccountTableRemote{
-    EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("tad");
-    EntityManager entityManager = entityManagerFactory.createEntityManager();
+    @PersistenceContext
+    private EntityManager entityManager;
     @Override
     public Long checkAccount(String username, String password) {
         Account account = entityManager.find(Account.class, username);

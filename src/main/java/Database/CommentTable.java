@@ -14,10 +14,10 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.List;
 
 @Slf4j
-@Singleton
+@Stateless
 public class CommentTable implements CommentTableRemote{
-    EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("tad");
-    EntityManager entityManager = entityManagerFactory.createEntityManager();
+    @PersistenceContext
+    private EntityManager entityManager;
     @Override
     public List<RawComment> getCommentsByHospitalId(Long id) {
         begin();

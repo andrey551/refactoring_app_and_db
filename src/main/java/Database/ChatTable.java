@@ -11,10 +11,10 @@ import jakarta.persistence.PersistenceContext;
 import java.util.Collections;
 import java.util.List;
 
-@Singleton
+@Stateless
 public class ChatTable implements ChatTableRemote{
-    EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("tad");
-    EntityManager entityManager = entityManagerFactory.createEntityManager();
+    @PersistenceContext
+    private EntityManager entityManager;
     @Override
     public Chat getChatFromXAndY(Long from, Long to) {
         List<Chat> chats = Collections.singletonList(entityManager.find(Chat.class, from));

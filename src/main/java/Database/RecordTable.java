@@ -12,10 +12,10 @@ import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.List;
 
-@Singleton
+@Stateless
 public class RecordTable implements RecordTableRemote{
-    EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("tad");
-    EntityManager entityManager = entityManagerFactory.createEntityManager();
+    @PersistenceContext
+    private EntityManager entityManager;
     @Override
     public List<Record> getRecordByUserId(Long id) {
 

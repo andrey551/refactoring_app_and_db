@@ -10,10 +10,10 @@ import jakarta.persistence.PersistenceContext;
 
 import java.util.List;
 
-@Singleton
+@Stateless
 public class HospspecTable implements HospspecTableRemote{
-    EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("tad");
-    EntityManager entityManager = entityManagerFactory.createEntityManager();
+    @PersistenceContext
+    private EntityManager entityManager;
     @Override
     public List<HospSpec> getHospspecByHospitalId(Long id) {
         begin();

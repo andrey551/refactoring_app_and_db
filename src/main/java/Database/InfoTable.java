@@ -10,10 +10,10 @@ import jakarta.persistence.PersistenceContext;
 
 import java.util.List;
 
-@Singleton
+@Stateless
 public class InfoTable implements InfoTableRemote{
-    EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("tad");
-    EntityManager entityManager = entityManagerFactory.createEntityManager();
+    @PersistenceContext
+    private EntityManager entityManager;
     @Override
     public Info getInfoByDoctorId(Long id) {
         begin();

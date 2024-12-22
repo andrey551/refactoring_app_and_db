@@ -1,15 +1,17 @@
 package Database;
 
 import jakarta.ejb.Singleton;
+import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 import Model.User;
+import jakarta.persistence.PersistenceContext;
 
-@Singleton
+@Stateless
 public class UserTable implements UserTableRemote{
-    EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("tad");
-    EntityManager entityManager = entityManagerFactory.createEntityManager();
+    @PersistenceContext
+    private EntityManager entityManager;
     @Override
     public User getUserByAccountId(Long id) {
         begin();

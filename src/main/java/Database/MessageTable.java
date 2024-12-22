@@ -10,10 +10,10 @@ import jakarta.persistence.PersistenceContext;
 
 import java.util.List;
 
-@Singleton
+@Stateless
 public class MessageTable implements MessageTableRemote{
-    EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("tad");
-    EntityManager entityManager = entityManagerFactory.createEntityManager();
+    @PersistenceContext
+    private EntityManager entityManager;
     @Override
     public List<Message> getMessageByChatId(Long id) {
         begin();

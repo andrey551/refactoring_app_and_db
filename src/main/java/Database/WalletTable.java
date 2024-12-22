@@ -1,15 +1,17 @@
 package Database;
 
 import jakarta.ejb.Singleton;
+import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 import Model.Wallet;
+import jakarta.persistence.PersistenceContext;
 
-@Singleton
+@Stateless
 public class WalletTable implements WalletTableRemote{
-    EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("tad");
-    EntityManager entityManager = entityManagerFactory.createEntityManager();
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Override
     public Wallet getWalletByUserId(Long id) {

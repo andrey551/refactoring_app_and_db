@@ -10,10 +10,10 @@ import jakarta.persistence.PersistenceContext;
 
 import java.util.List;
 
-@Singleton
+@Stateless
 public class EducationTable implements EducationTableRemote{
-    EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("tad");
-    EntityManager entityManager = entityManagerFactory.createEntityManager();
+    @PersistenceContext
+    private EntityManager entityManager;
     @Override
     public List<Education> getListEducationByDoctorId(Long id) {
         begin();

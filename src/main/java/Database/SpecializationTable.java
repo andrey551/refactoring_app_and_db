@@ -1,17 +1,19 @@
 package Database;
 
 import jakarta.ejb.Singleton;
+import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 import Model.Specialization;
+import jakarta.persistence.PersistenceContext;
 
 import java.util.List;
 
-@Singleton
+@Stateless
 public class SpecializationTable implements SpecializationTableRemote{
-    EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("tad");
-    EntityManager entityManager = entityManagerFactory.createEntityManager();
+    @PersistenceContext
+    private EntityManager entityManager;
     @Override
     public Specialization getSpecializationByName(String name) {
         begin();

@@ -28,3 +28,13 @@
 
 Или в ветке [refactoring-1](https://github.com/andrey551/refactoring_app_and_db/commits/phase-1/)
 
+### Вторая группа изменений:
+
+Описания коротко:
+
+- [x] Замена текстовой транзакции запроса функцией ORM
+- [x] Использование TransactionManager из Context.
+
+Отчёт по работе, с подробным описанием, что и для чего было изменено [тут](https://github.com/andrey551/refactoring_app_and_db/blob/main/docs/report%20%20phase%202.pdf).
+
+Или в ветке [refactoring-2](https://github.com/andrey551/refactoring_app_and_db/tree/phase-2)

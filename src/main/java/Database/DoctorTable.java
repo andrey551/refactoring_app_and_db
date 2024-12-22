@@ -1,10 +1,12 @@
 package Database;
 
 import jakarta.ejb.Singleton;
+import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 import Model.Doctor;
+import jakarta.persistence.PersistenceContext;
 
 @Singleton
 public class DoctorTable implements DoctorTableRemote{

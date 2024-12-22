@@ -25,26 +25,18 @@ public class WalletTable implements WalletTableRemote{
 
     @Override
     public Long addMoney(Long amount, Long id) {
-        begin();
-        long ret = entityManager.createQuery("update Wallet a set a.balance = (a.balance + ?1) where a.id = ?2")
-                .setParameter(1, amount)
-                .setParameter(2, id)
-                .executeUpdate();
-        commit();
-
-        return ret;
+        Wallet wallet = getWalletByUserId(id);
+        wallet.setBalance(wallet.getBalance() + amount);
+        entityManager.merge(wallet);
+        return wallet.getBalance();
     }
 
     @Override
     public Long payMoney(long amount, Long id) {
-        begin();
-        long ret = entityManager.createQuery("update Wallet a set a.balance = (a.balance - ?1) where a.id = ?2")
-                .setParameter(1, amount)
-                .setParameter(2, id)
-                .executeUpdate();
-        commit();
-
-        return ret;
+        Wallet wallet = getWalletByUserId(id);
+        wallet.setBalance(wallet.getBalance() - amount);
+        entityManager.merge(wallet);
+        return wallet.getBalance();
     }
 
     @Override

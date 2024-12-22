@@ -1,10 +1,15 @@
 package Database;
 
 import jakarta.ejb.Singleton;
+import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 import Model.Chat;
+import jakarta.persistence.PersistenceContext;
+
+import java.util.Collections;
+import java.util.List;
 
 @Singleton
 public class ChatTable implements ChatTableRemote{
@@ -12,13 +17,16 @@ public class ChatTable implements ChatTableRemote{
     EntityManager entityManager = entityManagerFactory.createEntityManager();
     @Override
     public Chat getChatFromXAndY(Long from, Long to) {
-        begin();
-        Chat ret = (Chat) entityManager.createQuery("SELECT Chat from Chat a where a.from = ?1 and a.to = ?2")
-                .setParameter(1, from)
-                .setParameter(2, to)
-                .getResultList()
-                .get(0);
-        commit();
+        List<Chat> chats = Collections.singletonList(entityManager.find(Chat.class, from));
+
+        Chat ret = null;
+        
+        for(Chat chat : chats) {
+            if(chat.getFrom().equals(from) && chat.getTo().equals(to)) {
+                ret = chat;
+                break;
+            }
+        }
 
         return ret;
     }

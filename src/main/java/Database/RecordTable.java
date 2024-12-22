@@ -1,10 +1,12 @@
 package Database;
 
 import jakarta.ejb.Singleton;
+import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 import Model.Record;
+import jakarta.persistence.PersistenceContext;
 
 import java.sql.Time;
 import java.sql.Timestamp;
@@ -30,33 +32,14 @@ public class RecordTable implements RecordTableRemote{
 
     @Override
     public Long deleteRecordByTime(Long id, Timestamp time) {
-        begin();
-
-        long ret = (long)entityManager.createQuery("DELETE from Record r where r.user_id = ?1 and r.time = ?2")
-                .setParameter(1, id)
-                .setParameter(2, time)
-                .executeUpdate();
-        commit();
-
-        return ret;
+        entityManager.remove(entityManager.find(Record.class, id));
+        return id;
     }
 
     @Override
     public Long addRecord(Record record) {
-        begin();
-
-        entityManager.createNativeQuery("INSERT INTO record(heart_beat, weight, height, blood_pressure, cholesterol, analysis, user_id) values (?,?,?,?,?,?,?)")
-                .setParameter(1, record.getHeartBeat())
-                .setParameter(2, record.getWeight())
-                .setParameter(3, record.getHeight())
-                .setParameter(4, record.getBloodPressure())
-                .setParameter(5, record.getCholesterol())
-                .setParameter(6, record.getAnalysis())
-                .setParameter(7, record.getUser_id()).executeUpdate();
-        commit();
-
+        entityManager.persist(record);
         return 1L;
-
     }
 
     @Override

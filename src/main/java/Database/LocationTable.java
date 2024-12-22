@@ -4,12 +4,15 @@ import Raw.ListId;
 import Raw.RawLocation;
 import Raw.coordinate;
 import jakarta.ejb.Singleton;
+import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 import Model.Location;
+import jakarta.persistence.PersistenceContext;
 
 import java.util.List;
+
 
 @Singleton
 public class LocationTable implements LocationTableRemote{

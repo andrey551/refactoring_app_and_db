@@ -4,17 +4,20 @@ import Raw.ListId;
 import Raw.RawLocation;
 import Raw.coordinate;
 import jakarta.ejb.Singleton;
+import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 import Model.Location;
+import jakarta.persistence.PersistenceContext;
 
 import java.util.List;
 
-@Singleton
+
+@Stateless
 public class LocationTable implements LocationTableRemote{
-    EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("tad");
-    EntityManager entityManager = entityManagerFactory.createEntityManager();
+    @PersistenceContext
+    private EntityManager entityManager;
     @Override
     public Location getLocationById(Long id) {
         begin();

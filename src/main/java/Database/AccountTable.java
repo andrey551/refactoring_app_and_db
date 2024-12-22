@@ -1,90 +1,62 @@
-  package Database;
+package Database;
 
 import jakarta.ejb.Singleton;
 
 import Model.Account;
 import Raw.RawAccount;
+import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
+import jakarta.persistence.PersistenceContext;
 
 import java.util.List;
 
-@Singleton
+@Stateless
 public class AccountTable implements AccountTableRemote{
-    EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("tad");
-    EntityManager entityManager = entityManagerFactory.createEntityManager();
+    @PersistenceContext
+    private EntityManager entityManager;
     @Override
     public Long checkAccount(String username, String password) {
-        begin();
-        List<Account> ret = (List<Account>) entityManager.createQuery("SELECT a FROM Account a WHERE a.username = ?1 AND a.password= ?2")
-                .setParameter(1, username)
-                .setParameter(2, password)
-                .getResultList();
-        commit();
-        if(ret.isEmpty()) return null;
-        return ret.get(0).getId();
+        Account account = entityManager.find(Account.class, username);
+        if(account.getPassword().equals(password)) {
+            return account.getId();
+        }
+        return null;
     }
 
     @Override
     public Long addAccount(RawAccount account) {
-        begin();
-        entityManager.createNativeQuery("insert into account (username, password)  values ( ?, ?)")
-
-                .setParameter(1, account.getUsername())
-                .setParameter(2, account.getPassword())
-                .executeUpdate();
-        commit();
-        List<Account> temp = entityManager.createNativeQuery("select id from account limit 1", Account.class).getResultList();
-        commit();
-        return temp.isEmpty()?null: temp.get(0).getId();
+        entityManager.persist(account);
+        return entityManager.find(Account.class, account.getUsername()).getId();
     }
 
     @Override
     public Long getIdByUsernameAndPassword(RawAccount account) {
-        begin();
-        List<Account> acc = (List<Account>)entityManager.createQuery("SELECT a from Account a where a.username = ?1 and a.password = ?2")
-                .setParameter(1, account.getUsername())
-                .setParameter(2, account.getPassword())
-                .getResultList();
-        commit();
-        if(acc.isEmpty()) return -1L;
-        return acc.get(0).getId();
+
+        Account acc = entityManager.find(Account.class, account.getUsername());
+        if(acc == null) return -1L;
+        return acc.getId();
     }
 
     @Override
     public long updatePassword(Account account, String newPassword) {
-        begin();
-        long ret = entityManager.createQuery("update Account a set a.password = ?1 where a.username = ?2 and a.password = ?3")
-                .setParameter(1, newPassword)
-                .setParameter(2, account.getUsername())
-                .setParameter(3, account.getPassword())
-                .executeUpdate();
-        commit();
-
-        return ret;
+        Account account1 = entityManager.find(account.getClass(), account.getId());
+        account1.setPassword(newPassword);
+        return entityManager.merge(account1).getId();
     }
 
     @Override
     public long deleteAccount(Account account) {
-        begin();
-        long ret = entityManager.createQuery("delete from Account a where a.username = ?1 and a.password = ?2")
-                .setParameter(1, account.getUsername())
-                .setParameter(2, account.getPassword())
-                .executeUpdate();
-        commit();
-
-        return ret;
+        entityManager.remove(account);
+        return 0L;
     }
 
     @Override
     public boolean checkUsername(RawAccount account) {
-        begin();
-        List<Account> res = (List<Account>) entityManager.createQuery("SELECT a FROM Account a WHERE a.username = ?1", Account.class)
-                .setParameter(1, account.getUsername())
-                .getResultList();
-        return res.isEmpty();
-
+        return entityManager.find(
+                Account.class,
+                account.getUsername()) != null;
     }
 
     @Override

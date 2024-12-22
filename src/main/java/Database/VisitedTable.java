@@ -1,16 +1,19 @@
 package Database;
 
+import Model.LocationVisited;
 import jakarta.ejb.Singleton;
+import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
+import jakarta.persistence.PersistenceContext;
 
 import java.util.List;
 
-@Singleton
+@Stateless
 public class VisitedTable implements VisitedTableRemote{
-    EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("tad");
-    EntityManager entityManager = entityManagerFactory.createEntityManager();
+    @PersistenceContext
+    private EntityManager entityManager;
     @Override
     public List<Long> getListVisited(Long userID) {
         begin();
@@ -24,23 +27,12 @@ public class VisitedTable implements VisitedTableRemote{
 
     @Override
     public void add(Long userId, Long locationId) {
-        begin();
-        entityManager.createNativeQuery("INSERT INTO LocationVisited(user_id, location_id) values(?, ?)")
-                .setParameter(1, userId)
-                .setParameter(2, locationId)
-                .executeUpdate();
-
-        commit();
+        entityManager.persist(new LocationVisited(userId, locationId));
     }
 
     @Override
     public void del(Long userId, Long locationId) {
-        begin();
-        entityManager.createNativeQuery("DELETE FROM LocationVisited where user_id = ? and location_id = ?")
-                .setParameter(1, userId)
-                .setParameter(2, locationId)
-                .executeUpdate();
-        commit();
+        entityManager.remove(new LocationVisited(userId, locationId));
     }
 
     @Override

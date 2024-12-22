@@ -3,19 +3,21 @@ package Database;
 import Raw.RawComment;
 import Raw.coordinate;
 import jakarta.ejb.Singleton;
+import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 import Model.Comment;
+import jakarta.persistence.PersistenceContext;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 
 @Slf4j
-@Singleton
+@Stateless
 public class CommentTable implements CommentTableRemote{
-    EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("tad");
-    EntityManager entityManager = entityManagerFactory.createEntityManager();
+    @PersistenceContext
+    private EntityManager entityManager;
     @Override
     public List<RawComment> getCommentsByHospitalId(Long id) {
         begin();
@@ -30,19 +32,13 @@ public class CommentTable implements CommentTableRemote{
     @Override
     public boolean addComment(Comment comment) {
 
-        begin();
+
 
         // System.out.println(comment.toString());
         log.info("Comment received: " + comment.toString());
 
-        long ret = entityManager
-                .createNativeQuery("INSERT INTO Comment(location_id, user_id, content, rating) values (?, ?, ?, ?)")
-                .setParameter(1, comment.getLocation_id())
-                .setParameter(2, comment.getUser_id())
-                .setParameter(3, comment.getContent())
-                .setParameter(4, comment.getRating())
-                .executeUpdate();
-        return ret != -1;
+        entityManager.persist(comment);
+        return true;
     }
 
 

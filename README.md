@@ -38,3 +38,15 @@
 Отчёт по работе, с подробным описанием, что и для чего было изменено [тут](https://github.com/andrey551/refactoring_app_and_db/blob/main/docs/report%20%20phase%202.pdf).
 
 Или в ветке [refactoring-2](https://github.com/andrey551/refactoring_app_and_db/tree/phase-2)
+
+### Вторая группа изменений:
+
+Описания коротко:
+
+- [x] Функция: удалить местоположение
+- [x] Функция: удалить пользователя
+- [x] Функция: удалить комментарий
+
+Отчёт по работе, с подробным описанием, что и для чего было изменено [тут](https://github.com/andrey551/refactoring_app_and_db/blob/main/docs/report%20%20phase%203.pdf).
+
+Или в ветке [refactoring-2](https://github.com/andrey551/refactoring_app_and_db/tree/phase-3)

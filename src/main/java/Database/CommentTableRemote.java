@@ -11,6 +11,7 @@ import java.util.List;
 public interface CommentTableRemote {
     List<RawComment> getCommentsByHospitalId(Long id);
     boolean addComment(Comment comment);
+    void deleteComment(Long id);
     EntityManager getEntityManager();
     void begin();
     void commit();

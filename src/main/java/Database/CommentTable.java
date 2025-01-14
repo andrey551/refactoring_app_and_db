@@ -41,6 +41,11 @@ public class CommentTable implements CommentTableRemote{
         return true;
     }
 
+    @Override
+    public void deleteComment(Long id) {
+        entityManager.remove(entityManager.find(RawComment.class, id));
+    }
+
 
     @Override
     public EntityManager getEntityManager() {

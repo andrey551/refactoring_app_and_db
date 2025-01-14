@@ -11,11 +11,7 @@ import Raw.coordinate;
 import Utils.JSONBuilder;
 import Utils.jwtHandler;
 import jakarta.ejb.EJB;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.PUT;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.MediaType;
@@ -112,6 +108,29 @@ public class commentAPI {
                 return Response.status(200).build();
         }
         return Response.status(403).build();
+    }
+
+    @DELETE
+    @Path("/comments/{id}")
+    public Response deleteComment(@Context HttpHeaders httpHeaders,
+                                  @PathParam("id") Long id) {
+        List<String> headerList = httpHeaders.getRequestHeader("Authorization");
+
+        if(headerList.isEmpty()) {
+            return Response.status(401).build();
+        }
+
+        RawAccount ret = jwtHandler.verify(headerList.get(0));
+
+        if(ret == null)
+            return Response.status(400).entity("Session timeout!").build();
+
+        if(id == null)
+            return Response.status(403).build();
+
+        commentTableRemote.deleteComment(id);
+
+        return Response.status(200).build();
     }
 
 }

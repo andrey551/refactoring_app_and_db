@@ -25,6 +25,11 @@ public class UserTable implements UserTableRemote{
     }
 
     @Override
+    public void deleteUserByAccountId(Long id) {
+        entityManager.remove(getUserByAccountId(id));
+    }
+
+    @Override
     public EntityManager getEntityManager() {
         return this.entityManager;
     }

@@ -23,7 +23,7 @@ import java.sql.Timestamp;
 import java.util.List;
 
 @Slf4j
-@Path("/homes")
+@Path("/home")
 public class homeAPI {
 
     @EJB
@@ -155,6 +155,24 @@ public class homeAPI {
         }
         
         return Response.status(403).build();
+    }
+
+    @DELETE
+    @Path("/user")
+    public Response deleteUser(@Context HttpHeaders httpHeaders) {
+        List<String> headerList = httpHeaders.getRequestHeader("Authorization");
+        if(headerList.isEmpty()) {
+            return Response.status(401).build();
+        }
+        RawAccount ret = jwtHandler.verify(headerList.get(0));
+        if (ret == null) {
+            return Response.status(400).entity("Session timeout!").build();
+        }
+
+        userTableRemote.deleteUserByAccountId(ret.getId());
+
+        return Response.status(200).build();
+
     }
 
 }

@@ -94,4 +94,31 @@ public class locationAPI {
         }
         return Response.status(403).build();
     }
+
+    @DELETE
+    @Path("/")
+    public Response deleteLocation(@Context HttpHeaders httpHeaders,
+                                   coordinate coor) {
+        List<String> headerList = httpHeaders.getRequestHeader("Authorization");
+
+        if(headerList.isEmpty()) {
+            return Response.status(401).build();
+        }
+
+        RawAccount ret = jwtHandler.verify(headerList.get(0));
+        if(ret == null)
+            return Response.status(400).entity("Session timeout!").build();
+
+        Long locationId = locationTableRemote.getIdByCoordinate(coor);
+
+        if(locationId != null) {
+            List<Specialization> listSpec =
+                    specializationTableRemote
+                            .getSpecializationsByHospitalId(locationId);
+
+            return Response.status(200).build();
+        }
+
+        return Response.status(403).build();
+    }
 }

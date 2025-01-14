@@ -41,7 +41,7 @@
 
 Или в ветке [refactoring-2](https://github.com/andrey551/refactoring_app_and_db/tree/phase-2)
 
-### Вторая группа изменений:
+### Третий группа изменений:
 
 Описания коротко:
 

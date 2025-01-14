@@ -15,6 +15,7 @@ public interface LocationTableRemote {
     List<RawLocation> searchLocationsByDistance(Float lon, Float lat, String type);
     List<Location> getLocs(String type);
     Long getIdByCoordinate(coordinate coor);
+    void deleteLocationById(Long id);
 
     List<RawLocation> getLocsVisited(ListId ids, String type);
 

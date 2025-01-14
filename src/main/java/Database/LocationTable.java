@@ -67,6 +67,11 @@ public class LocationTable implements LocationTableRemote{
         return ret.get(0).getId();
     }
 
+    @Override
+    public void deleteLocationById(Long id) {
+        entityManager.remove(getLocationById(id));
+    }
+
 
     public List<RawLocation> getLocsVisited(ListId listId, String type) {
         List<RawLocation> ret = entityManager.createNativeQuery("SELECT (location.name, " +

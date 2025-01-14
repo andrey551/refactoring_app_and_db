@@ -49,4 +49,4 @@
 
 Отчёт по работе, с подробным описанием, что и для чего было изменено [тут](https://github.com/andrey551/refactoring_app_and_db/blob/main/docs/report%20%20phase%203.pdf).
 
-Или в ветке [refactoring-2](https://github.com/andrey551/refactoring_app_and_db/tree/phase-3)
+Или в ветке [refactoring-3](https://github.com/andrey551/refactoring_app_and_db/tree/phase-3)
